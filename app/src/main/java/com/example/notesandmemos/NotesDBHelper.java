@@ -84,7 +84,7 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         List<Note> notes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTES, null, null, null, null, null, orderBy);
-
+// Adding
         if (cursor.moveToFirst()) {
             do {
                 Note note = new Note();
