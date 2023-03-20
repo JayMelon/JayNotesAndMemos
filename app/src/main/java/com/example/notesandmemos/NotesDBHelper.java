@@ -123,13 +123,21 @@ public class NotesDBHelper extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.moveToFirst()) {
             Date creationDate, dueDate;
+            long creationDateLong, dueDateLong;
             Note note = new Note();
-note.setNoteID();
-note.setTitle();
-note.setContent();
-note.setPriority();
-note.setNoteCreationDate();
-note.setNoteDueDate();
+            note.setNoteID(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+            note.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
+            note.setContent(cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)));
+            note.setPriority(cursor.getInt(cursor.getColumnIndex(COLUMN_PRIORITY)));
+//Conversion to Date
+            creationDateLong = cursor.getLong(cursor.getColumnIndex(COLUMN_CREATION_DATE));
+            creationDate = new Date(creationDateLong);
+            note.setNoteCreationDate(creationDate);
+            //Due Date
+            dueDateLong = cursor.getLong(cursor.getColumnIndex(COLUMN_DUE_DATE));
+            dueDate = new Date(dueDateLong);
+            note.setNoteDueDate(dueDate);
+        ;
             return note;
         }
 
@@ -139,7 +147,18 @@ note.setNoteDueDate();
 
         return null;
     }
+    //
+    public void addNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TITLE, note.getTitle());
+        contentValues.put(COLUMN_CONTENT, note.getContent());
+        contentValues.put(COLUMN_PRIORITY, note.getPriority());
+        contentValues.put(COLUMN_CREATION_DATE, Long.parseLong(note.getNoteCreationDate().toString()));
+        contentValues.put(COLUMN_DUE_DATE, Long.parseLong(note.getNoteDueDate().toString()));
 
-    // ... existing code ...
+        db.insert(TABLE_NOTES, null, contentValues);
+        db.close();
+    }
 }
-}
+

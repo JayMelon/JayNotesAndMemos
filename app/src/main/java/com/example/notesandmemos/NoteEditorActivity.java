@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Date;
+
 public class NoteEditorActivity extends AppCompatActivity {
     private EditText editTitle, editContent, editPriority;
     private Button saveButton;
@@ -46,6 +48,8 @@ public class NoteEditorActivity extends AppCompatActivity {
                 note.setTitle(title);
                 note.setContent(content);
                 note.setPriority(priority);
+                note.setNoteCreationDate(System.currentTimeMillis());
+                note.setNoteDueDate(System.currentTimeMillis());
 
                 if (noteId == -1) {
                     // Save a new note
