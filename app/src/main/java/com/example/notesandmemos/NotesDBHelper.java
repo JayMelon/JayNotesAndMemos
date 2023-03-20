@@ -1,5 +1,6 @@
 package com.example.notesandmemos;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -80,11 +81,13 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Note> getAllNotes(String orderBy) {
-        List<Note> notes = new ArrayList<>();
+    //Gets all notes from the DBS
+    @SuppressLint("Range")
+    public ArrayList<Note> getAllNotes(String orderBy) {
+        ArrayList<Note> notes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTES, null, null, null, null, null, orderBy);
-// Adding
+
         if (cursor.moveToFirst()) {
             do {
                 Note note = new Note();
@@ -92,8 +95,14 @@ public class NotesDBHelper extends SQLiteOpenHelper {
                 note.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
                 note.setContent(cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)));
                 note.setPriority(cursor.getInt(cursor.getColumnIndex(COLUMN_PRIORITY)));
-                note.setNoteCreationDate(new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_CREATION_DATE))));
-                note.setNoteDueDate(new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_DUE_DATE))));
+
+                long creationDateLong = cursor.getLong(cursor.getColumnIndex(COLUMN_CREATION_DATE));
+                Date creationDate = new Date(creationDateLong);
+                note.setNoteCreationDate(creationDate);
+
+                long dueDateLong = cursor.getLong(cursor.getColumnIndex(COLUMN_DUE_DATE));
+                Date dueDate = new Date(dueDateLong);
+                note.setNoteDueDate(dueDate);
 
                 notes.add(note);
             } while (cursor.moveToNext());
@@ -103,4 +112,34 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         db.close();
         return notes;
     }
+    public Note getNote(int noteId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NOTES,
+                new String[]{COLUMN_ID, COLUMN_TITLE,COLUMN_CONTENT,
+                        COLUMN_PRIORITY, COLUMN_CREATION_DATE, COLUMN_DUE_DATE},
+                COLUMN_ID + "=?",
+                new String[]{String.valueOf(noteId)},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            Date creationDate, dueDate;
+            Note note = new Note();
+note.setNoteID();
+note.setTitle();
+note.setContent();
+note.setPriority();
+note.setNoteCreationDate();
+note.setNoteDueDate();
+            return note;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return null;
+    }
+
+    // ... existing code ...
+}
 }
