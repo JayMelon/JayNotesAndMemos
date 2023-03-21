@@ -3,10 +3,13 @@ package com.example.notesandmemos;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -15,13 +18,15 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
 
-public class NoteEditorActivity extends AppCompatActivity implements DatePickDialog.SaveDateListener {
+public class NoteEditorActivity extends AppCompatActivity {
     private EditText editTitle, editContent, editPriority;
-    private Button saveButton;
+    private TextView editDate;
+    private Button saveButton, datePickerButton;
     private RadioGroup radioGroupPriority;
     private RadioButton radioHigh, radioMedium, radioLow;
     private NotesDBHelper notesDBHelper;
     private int noteId;
+private DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,7 @@ public class NoteEditorActivity extends AppCompatActivity implements DatePickDia
             }
         });
     }
+
     //Inits the radio buttons to be pre checked based on Priority.
     private void initSavedNotePriority(int priority){
         switch(priority){
@@ -109,22 +115,83 @@ public class NoteEditorActivity extends AppCompatActivity implements DatePickDia
             return 1;
         }
     }
-
-    @Override
-    public void didFinishDatePickDialog(Calendar selectedDate) {
-        TextView dueDateText = findViewById(R.id.due_date);
-        dueDateText.setText(DateFormat.format("MM/dd/yy", selectedDate));
-    }
-
     private void initChangeDateButton() {
-        TextView changeDate = findViewById(R.id.due_date);
-        changeDate.setOnClickListener(new View.OnClickListener() {
+        datePickerButton = findViewById(R.id.datePickerBtn);
+        initDatePicker();
+        datePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                FragmentManager fm = getSupportFragmentManager();
-                DatePickDialog datePickDialog = new DatePickDialog();
-                datePickDialog.show(fm, "DatePick");
+            public void onClick(View v) {
+                openDatePicker(v);
             }
         });
+
+    }
+    private String makeDateString(int day, int month, int year){
+        return getMonthFormat(month) + " " + day + " " + year;
+    }
+    private void initDatePicker(){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                month++;
+                String date = makeDateString(day, month, year);
+                datePickerButton.setText(date);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+    }
+    private String getMonthFormat(int month){
+        String currentMonth = "";
+        switch(month){
+            case 1:
+                currentMonth = "JAN";
+                break;
+            case 2:
+                currentMonth = "FEB";
+                break;
+            case 3:
+                currentMonth = "MAR";
+                break;
+            case 4:
+                currentMonth = "APR";
+                break;
+            case 5:
+                currentMonth = "MAY";
+                break;
+            case 6:
+                currentMonth = "JUN";
+                break;
+            case 7:
+                currentMonth = "JUL";
+                break;
+            case 8:
+                currentMonth = "AUG";
+                break;
+            case 9:
+                currentMonth = "SEP";
+                break;
+            case 10:
+                currentMonth = "OCT";
+                break;
+            case 11:
+                currentMonth = "NOV";
+                break;
+            case 12:
+                currentMonth = "DEC";
+                break;
+        }
+        return currentMonth;
+    }
+
+    public void openDatePicker(View view){
+        datePickerDialog.show();
     }
 }

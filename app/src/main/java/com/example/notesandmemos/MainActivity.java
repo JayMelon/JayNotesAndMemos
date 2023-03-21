@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private NotesDBHelper notesDBHelper;
     private ArrayList<Note> notes;
     private NoteAdapter noteAdapter;
+    private ImageButton homeButton, settingButton;
     public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, content, priority, dueDate;
 
