@@ -40,16 +40,19 @@ public class NoteEditorActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String title = editTitle.getText().toString();
                 String content = editContent.getText().toString();
                 int priority = Integer.parseInt(editPriority.getText().toString());
-
+                Date creationDate = new Date(System.currentTimeMillis());
+                Date noteDueDate = new Date(System.currentTimeMillis());
                 Note note = new Note();
                 note.setTitle(title);
                 note.setContent(content);
                 note.setPriority(priority);
-                note.setNoteCreationDate(System.currentTimeMillis());
-                note.setNoteDueDate(System.currentTimeMillis());
+
+                note.setNoteCreationDate(creationDate);
+                note.setNoteDueDate(noteDueDate);
 
                 if (noteId == -1) {
                     // Save a new note

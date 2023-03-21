@@ -154,8 +154,8 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_TITLE, note.getTitle());
         contentValues.put(COLUMN_CONTENT, note.getContent());
         contentValues.put(COLUMN_PRIORITY, note.getPriority());
-        contentValues.put(COLUMN_CREATION_DATE, Long.parseLong(note.getNoteCreationDate().toString()));
-        contentValues.put(COLUMN_DUE_DATE, Long.parseLong(note.getNoteDueDate().toString()));
+        contentValues.put(COLUMN_CREATION_DATE, note.getNoteCreationDate().toString());
+        contentValues.put(COLUMN_DUE_DATE, note.getNoteDueDate().toString());
 
         db.insert(TABLE_NOTES, null, contentValues);
         db.close();
