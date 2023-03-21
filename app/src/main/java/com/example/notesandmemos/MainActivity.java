@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);
-            priority = itemView.findViewById(R.id.edit_priority);
+            priority = itemView.findViewById(R.id.priority);
             dueDate = itemView.findViewById(R.id.dueDate);
             itemView.setOnClickListener(this);
         }
