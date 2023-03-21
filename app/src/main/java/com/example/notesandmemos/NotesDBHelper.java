@@ -26,7 +26,7 @@ public class NotesDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_TITLE + " TEXT, " +
+            COLUMN_TITLE + " TEXT NOT NULL, " +
             COLUMN_CONTENT + " TEXT, " +
             COLUMN_PRIORITY + " INTEGER, " +
             COLUMN_CREATION_DATE + " INTEGER, " +
