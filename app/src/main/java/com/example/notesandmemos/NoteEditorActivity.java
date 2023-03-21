@@ -1,17 +1,21 @@
 package com.example.notesandmemos;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.Date;
 
-public class NoteEditorActivity extends AppCompatActivity {
+public class NoteEditorActivity extends AppCompatActivity implements DatePickDialog.SaveDateListener {
     private EditText editTitle, editContent, editPriority;
     private Button saveButton;
     private RadioGroup radioGroupPriority;
@@ -23,6 +27,8 @@ public class NoteEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
+
+        initChangeDateButton();
 
         // Initialize views and database helper
         editTitle = findViewById(R.id.edit_title);
@@ -102,5 +108,23 @@ public class NoteEditorActivity extends AppCompatActivity {
         }else{
             return 1;
         }
+    }
+
+    @Override
+    public void didFinishDatePickDialog(Calendar selectedDate) {
+        TextView dueDateText = findViewById(R.id.due_date);
+        dueDateText.setText(DateFormat.format("MM/dd/yy", selectedDate));
+    }
+
+    private void initChangeDateButton() {
+        TextView changeDate = findViewById(R.id.due_date);
+        changeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                DatePickDialog datePickDialog = new DatePickDialog();
+                datePickDialog.show(fm, "DatePick");
+            }
+        });
     }
 }
