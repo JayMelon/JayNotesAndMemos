@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NotesSettingsActivity">
+
+    <RadioGroup
+        android:id="@+id/radioGroupSortOrder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sortOrderContactsByText">
+
+        <RadioButton
+            android:id="@+id/rbAscending"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="@string/radioAscendingText" />
+
+        <RadioButton
+            android:id="@+id/rbDescending"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="@string/radioDescending" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/sortOrderContactsByText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="23dp"
+        android:text="@string/sortOrderByText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupSortBy" />
+
+    <TextView
+        android:id="@+id/sortContactsByText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/sortNoteText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupSortBy"
+        android:layout_width="97dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sortContactsByText">
+
+        <RadioButton
+            android:id="@+id/rbTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="@string/radioTitleText" />
+
+        <RadioButton
+            android:id="@+id/rbPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="@string/radioPriorityText" />
+
+        <RadioButton
+            android:id="@+id/rbDate"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="@string/radioDueDateText" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#6C6C6C"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#000000"
+            android:minHeight="48dp"
+            app:srcCompat="?attr/actionModePasteDrawable" />
+
+        <ImageButton
+            android:id="@+id/imageButtonSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#000000"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
