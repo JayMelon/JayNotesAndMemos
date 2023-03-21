@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -75,6 +77,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String sortBy = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.SortFieldKey, NotesDBHelper.COLUMN_TITLE);
+        String sortOrder = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.OrderFieldKey, "ASC");
+        NotesDBHelper ds = new NotesDBHelper(this);
+        try {
+            ds.open();
+            notes = ds.getAllContacts(sortBy, sortOrder);
+            ds.close();
+            if (notes.size() > 0) {
+                recyclerView = findViewById(R.id.recyclerView);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+                recyclerView.setLayoutManager(layoutManager);
+                noteAdapter = new NoteAdapter(this, notes);
+                recyclerView.setAdapter(noteAdapter);
+            } else {
+                Intent intent = new Intent(MainActivity.this, NotesSettingsActivity.class);
+                startActivity(intent);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void loadNotesFromDatabase() {
         String orderBy = "priority DESC"; // Or any other ordering based on your preferences
         notes = notesDBHelper.getAllNotes(orderBy);

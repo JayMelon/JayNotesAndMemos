@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 public class NotesSettingsActivity extends AppCompatActivity {
-    public static final String ContactList_Preferences = "Notes_Preferences";
+    public static final String Notes_Preferences = "Notes_Preferences";
     public static final String SortFieldKey = "sortField";
     public static final String OrderFieldKey = "sortOrderField";
     RadioButton rbTitle, rbPriority,rbDueDate, rbAscending, rbDescending;
@@ -35,12 +35,9 @@ public class NotesSettingsActivity extends AppCompatActivity {
         rbPriority = findViewById(R.id.rbPriority);
         rbDueDate = findViewById(R.id.rbDate);
 
-        // Initializes Home Button to send User to Home Activity
-        initHomeButton();
-
         //On Initilatizion get preferences settings, If User has nothing saved default is contactName and ASC
-        sortByPreferences = getSharedPreferences(ContactList_Preferences, Context.MODE_PRIVATE).getString(OrderFieldKey,NotesDBHelper.COLUMN_TITLE);
-        OrderByPreferences = getSharedPreferences(ContactList_Preferences,Context.MODE_PRIVATE).getString(SortFieldKey,"ASC");
+        sortByPreferences = getSharedPreferences(Notes_Preferences, Context.MODE_PRIVATE).getString(OrderFieldKey,NotesDBHelper.COLUMN_TITLE);
+        OrderByPreferences = getSharedPreferences(Notes_Preferences,Context.MODE_PRIVATE).getString(SortFieldKey,"ASC");
         //Buttons update based on Initilzation;
         if (sortByPreferences.equalsIgnoreCase(NotesDBHelper.COLUMN_TITLE)) {
             rbTitle.setChecked(true);
@@ -54,6 +51,12 @@ public class NotesSettingsActivity extends AppCompatActivity {
         } else {
             rbDescending.setChecked(true);
         }
+
+        initSortByClick();
+        initOrderByClick();
+
+        // Initializes Home Button to send User to Home Activity
+        initHomeButton();
     }
 
 
@@ -64,15 +67,15 @@ public class NotesSettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if(rbTitle.isChecked()){
                     //Set to Column Name
-                    getSharedPreferences(ContactList_Preferences, Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_TITLE).apply();
+                    getSharedPreferences(Notes_Preferences, Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_TITLE).apply();
                 }
                 //Set to City Column Name
                 else if(rbPriority.isChecked()){
-                    getSharedPreferences(ContactList_Preferences,Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_PRIORITY).apply();
+                    getSharedPreferences(Notes_Preferences,Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_PRIORITY).apply();
                 }
                 //Set to Birthday Column name
                 else {
-                    getSharedPreferences(ContactList_Preferences, Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_DUE_DATE).apply();
+                    getSharedPreferences(Notes_Preferences, Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_DUE_DATE).apply();
                 }
             }
         });
@@ -82,10 +85,10 @@ public class NotesSettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if(rbAscending.isChecked()){
-                    getSharedPreferences(ContactList_Preferences,Context.MODE_PRIVATE).edit().putString(SortFieldKey,"ASC").apply();
+                    getSharedPreferences(Notes_Preferences,Context.MODE_PRIVATE).edit().putString(SortFieldKey,"ASC").apply();
                 }
                 else {
-                    getSharedPreferences(ContactList_Preferences, Context.MODE_PRIVATE).edit().putString(SortFieldKey,"DESC").apply();
+                    getSharedPreferences(Notes_Preferences, Context.MODE_PRIVATE).edit().putString(SortFieldKey,"DESC").apply();
                 }
             }
         });
