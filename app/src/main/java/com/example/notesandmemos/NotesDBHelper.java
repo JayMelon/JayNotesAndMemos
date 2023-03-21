@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class NotesDBHelper extends SQLiteOpenHelper {
+private SQLiteDatabase database;
 
     private static final String DATABASE_NAME = "notes.db";
     private static final int DATABASE_VERSION = 1;
@@ -31,7 +33,9 @@ public class NotesDBHelper extends SQLiteOpenHelper {
             COLUMN_PRIORITY + " INTEGER, " +
             COLUMN_CREATION_DATE + " INTEGER, " +
             COLUMN_DUE_DATE + " INTEGER" + ")";
-
+public void open() throws SQLException{
+    database = getWritableDatabase();
+}
     public NotesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -87,6 +91,37 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         ArrayList<Note> notes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTES, null, null, null, null, null, orderBy);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                note.setNoteID(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                note.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
+                note.setContent(cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)));
+                note.setPriority(cursor.getInt(cursor.getColumnIndex(COLUMN_PRIORITY)));
+
+                long creationDateLong = cursor.getLong(cursor.getColumnIndex(COLUMN_CREATION_DATE));
+                Date creationDate = new Date(creationDateLong);
+                note.setNoteCreationDate(creationDate);
+
+                long dueDateLong = cursor.getLong(cursor.getColumnIndex(COLUMN_DUE_DATE));
+                Date dueDate = new Date(dueDateLong);
+                note.setNoteDueDate(dueDate);
+
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return notes;
+    }
+    @SuppressLint("Range")
+    public ArrayList<Note> getAllNotes(String orderBy, String sortby) {
+        ArrayList<Note> notes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM "+NotesDBHelper.TABLE_NOTES+" ORDER BY "+orderBy+" "+sortby;
+        Cursor cursor = db.rawQuery(query,null);
 
         if (cursor.moveToFirst()) {
             do {

@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        String sortBy = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.SortFieldKey, NotesDBHelper.COLUMN_TITLE);
-        String sortOrder = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.OrderFieldKey, "ASC");
+        String sortOrder = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.OrderFieldKey, NotesDBHelper.COLUMN_TITLE);
+        String sortby = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.SortFieldKey, "ASC");
         NotesDBHelper ds = new NotesDBHelper(this);
         try {
             ds.open();
-            notes = ds.getAllContacts(sortBy, sortOrder);
+            notes = ds.getAllNotes(sortOrder, sortby);
             ds.close();
             if (notes.size() > 0) {
                 recyclerView = findViewById(R.id.recyclerView);
