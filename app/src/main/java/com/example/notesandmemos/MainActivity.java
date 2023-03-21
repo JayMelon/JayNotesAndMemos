@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initializes Settings Button to send User to Settings Activity
+        initSettingsButton();
+
         // Initialize views and database helper
         recyclerView = findViewById(R.id.recyclerView);
         fabNewNote = findViewById(R.id.fab_new_note);
@@ -87,4 +90,16 @@ public class MainActivity extends AppCompatActivity {
             noteAdapter.notifyDataSetChanged();
         }
     }
+
+    private void initSettingsButton() {
+        settingButton = findViewById(R.id.imageButtonSettings);
+        settingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, NotesSettingsActivity.class);
+                i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
     }
+}

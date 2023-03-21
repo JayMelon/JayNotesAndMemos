@@ -38,4 +38,6 @@
     <string name="getCoordinates">Get Coordinates</string>
     <string name="emptyText">None</string>
     <string name="batteryDefault">100%</string>
+    <string name="Settings">settings</string>
+    <string name="Home">home</string>
 </resources>
