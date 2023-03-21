@@ -12,14 +12,30 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <EditText
-            android:id="@+id/edit_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
-            android:inputType="text"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:hint="Title"
+                android:inputType="text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:background="@color/system_transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/delete"
+                android:visibility="visible" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/edit_content"
@@ -73,12 +89,12 @@
 
         <Button
             android:id="@+id/datePickerBtn"
+            style="?android:spinnerStyle"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="JAN 01 2020"
-            android:textSize="25dp"
+            android:text="JAN 01 2022"
             android:textColor="@color/black"
-            style="?android:spinnerStyle"/>
+            android:textSize="25dp" />
 
         <Button
             android:id="@+id/save_button"
