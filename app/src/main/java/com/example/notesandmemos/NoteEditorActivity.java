@@ -50,7 +50,6 @@ public class NoteEditorActivity extends AppCompatActivity {
                 note.setTitle(title);
                 note.setContent(content);
                 note.setPriority(priority);
-
                 note.setNoteCreationDate(creationDate);
                 note.setNoteDueDate(noteDueDate);
 

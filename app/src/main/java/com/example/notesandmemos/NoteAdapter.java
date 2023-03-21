@@ -34,11 +34,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         Note note = notes.get(position);
         holder.title.setText(note.getTitle());
         holder.content.setText(note.getContent());
-        /*
-        holder.priority.setText(note.getPriority());
-         */
+        holder.priority.setText(note.getPriority()+"");
+        holder.dueDate.setText(note.getNoteDueDate().toString());
     }
-
+//Returns the size of the notes
     @Override
     public int getItemCount() {
         return notes.size();
@@ -49,12 +48,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, content, priority;
+        TextView title, content, priority, dueDate;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
+            //Initilizing the TextFields
             title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);
+            priority = itemView.findViewById(R.id.priority);
+            dueDate = itemView.findViewById(R.id.dueDate);
+            //Initilizing listener for edit activity.
             itemView.setOnClickListener(this);
         }
 

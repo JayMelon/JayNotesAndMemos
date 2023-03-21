@@ -112,6 +112,7 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         db.close();
         return notes;
     }
+    @SuppressLint("Range")
     public Note getNote(int noteId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTES,

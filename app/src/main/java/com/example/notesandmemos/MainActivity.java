@@ -23,12 +23,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Note> notes;
     private NoteAdapter noteAdapter;
     public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, content;
+        TextView title, content, priority, dueDate;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);
+            priority = itemView.findViewById(R.id.edit_priority);
+            dueDate = itemView.findViewById(R.id.dueDate);
             itemView.setOnClickListener(this);
         }
 
