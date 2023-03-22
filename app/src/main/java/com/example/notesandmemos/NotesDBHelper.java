@@ -83,7 +83,7 @@ public void open() throws SQLException{
 boolean didDelete = false;
 try{
     System.out.println("Deleting");
-    didDelete = database.delete(DATABASE_NAME,COLUMN_ID+" = "+noteId, null)>0;
+    didDelete = database.delete(TABLE_NOTES,COLUMN_ID+" = "+noteId, null)>0;
 }catch(Exception e){
 
 }

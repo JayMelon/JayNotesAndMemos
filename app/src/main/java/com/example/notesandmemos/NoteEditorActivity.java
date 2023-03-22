@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +41,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note_editor);
 
         initChangeDateButton();
+        initDeleteBtn();
 
         // Initialize views and database helper
         editTitle = findViewById(R.id.edit_title);
@@ -240,12 +243,27 @@ return makeDateString(day,month,year);
         datePickerDialog.show();
     }
     private void initDeleteBtn(){
-        deleteButton.findViewById(R.id.deleteBtn);
+        deleteButton = findViewById(R.id.deleteBtn);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+NotesDBHelper ds = new NotesDBHelper(NoteEditorActivity.this);
+    ds.open();
+    boolean didDelete = ds.deleteNote(noteId);
+    ds.close();
+    if(didDelete){
+        Toast.makeText(NoteEditorActivity.this,"Note has been deleted", Toast.LENGTH_LONG).show();
+        launchMain(v);
+}else{
+        Toast.makeText(NoteEditorActivity.this,"Delete Failed", Toast.LENGTH_LONG).show();
+    }
             }
         });
+    }
+
+    private void launchMain(View v) {
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 }
