@@ -80,4 +80,22 @@ public class Note {
     public void setNoteDueDate(Date noteDueDate) {
         this.noteDueDate = noteDueDate;
     }
+    //Returns High/Medium/Low based on priority level.
+    public static String priorityText(int priority){
+        String level;
+        switch(priority){
+            case 1:
+                level = "Low";
+                break;
+            case 2:
+                level = "Med";
+                break;
+            case 3:
+                level = "High";
+                break;
+            default:
+                level = null;
+        }
+        return level;
+    }
 }

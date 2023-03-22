@@ -11,7 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private ArrayList<Note> notes;
@@ -32,10 +35,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = notes.get(position);
+
         holder.title.setText(note.getTitle());
         holder.content.setText(note.getContent());
-        holder.priority.setText(note.getPriority()+"");
-        holder.dueDate.setText(note.getNoteDueDate().toString());
+        holder.priority.setText(Note.priorityText(note.getPriority()));
+        holder.dueDate.setText(formatDate(note.getNoteDueDate().getTime()));
     }
 //Returns the size of the notes
     @Override
@@ -69,5 +73,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             intent.putExtra("noteId", note.getNoteID());
             ((Activity) context).startActivityForResult(intent, 1);
         }
+    }
+    public String formatDate(long milliseconds) {
+        Date date = new Date(milliseconds);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+        return simpleDateFormat.format(date);
     }
 }

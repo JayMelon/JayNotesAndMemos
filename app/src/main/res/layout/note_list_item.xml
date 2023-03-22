@@ -47,7 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Due"
+            android:layout_marginEnd="10dp"
+            android:text="Due:"
             app:layout_constraintEnd_toStartOf="@+id/dueDate"
             app:layout_constraintTop_toTopOf="parent" />
 
