@@ -33,15 +33,13 @@ public class NoteEditorActivity extends AppCompatActivity {
     private NotesDBHelper notesDBHelper;
     private int noteId;
     private DatePickerDialog datePickerDialog;
-    boolean newNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
-
-        initChangeDateButton();
         initDeleteBtn();
+        initChangeDateButton();
 
         // Initialize views and database helper
         editTitle = findViewById(R.id.edit_title);
@@ -65,7 +63,9 @@ public class NoteEditorActivity extends AppCompatActivity {
             //Converted Time
             datePickerButton.setText(getDate(note.getNoteDueDate().getTime()));
 
-
+        }else{
+            deleteButton = findViewById(R.id.deleteBtn);
+            deleteButton.setVisibility(View.INVISIBLE);
         }
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -242,25 +242,29 @@ return makeDateString(day,month,year);
     private void openDatePicker(View view){
         datePickerDialog.show();
     }
-    private void initDeleteBtn(){
+    private void initDeleteBtn() {
         deleteButton = findViewById(R.id.deleteBtn);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-NotesDBHelper ds = new NotesDBHelper(NoteEditorActivity.this);
-    ds.open();
-    boolean didDelete = ds.deleteNote(noteId);
-    ds.close();
-    if(didDelete){
-        Toast.makeText(NoteEditorActivity.this,"Note has been deleted", Toast.LENGTH_LONG).show();
-        launchMain(v);
-}else{
-        Toast.makeText(NoteEditorActivity.this,"Delete Failed", Toast.LENGTH_LONG).show();
-    }
-            }
-        });
-    }
 
+        try {
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NotesDBHelper ds = new NotesDBHelper(NoteEditorActivity.this);
+                    ds.open();
+                    boolean didDelete = ds.deleteNote(noteId);
+                    ds.close();
+                    if (didDelete) {
+                        Toast.makeText(NoteEditorActivity.this, "Note has been deleted", Toast.LENGTH_LONG).show();
+                        launchMain(v);
+                    } else {
+                        Toast.makeText(NoteEditorActivity.this, "Delete Failed", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void launchMain(View v) {
         Intent i = new Intent(this, MainActivity.class);
         i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP);
