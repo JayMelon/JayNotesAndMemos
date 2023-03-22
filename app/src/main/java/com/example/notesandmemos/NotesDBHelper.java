@@ -79,10 +79,15 @@ public void open() throws SQLException{
         return rowsAffected;
     }
 
-    public void deleteNote(int noteId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NOTES, COLUMN_ID + "=?", new String[]{String.valueOf(noteId)});
-        db.close();
+    public boolean deleteNote(int noteId) {
+boolean didDelete = false;
+try{
+    System.out.println("Deleting");
+    didDelete = database.delete(DATABASE_NAME,COLUMN_ID+" = "+noteId, null)>0;
+}catch(Exception e){
+
+}
+return didDelete;
     }
 
     //Gets all notes from the DBS
@@ -185,13 +190,15 @@ public void open() throws SQLException{
     }
     //
     public void addNote(Note note) {
+    long creationDate = note.getNoteCreationDate().getTime();
+    long dueDate = note.getNoteDueDate().getTime();
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TITLE, note.getTitle());
         contentValues.put(COLUMN_CONTENT, note.getContent());
         contentValues.put(COLUMN_PRIORITY, note.getPriority());
-        contentValues.put(COLUMN_CREATION_DATE, note.getNoteCreationDate().toString());
-        contentValues.put(COLUMN_DUE_DATE, note.getNoteDueDate().toString());
+        contentValues.put(COLUMN_CREATION_DATE, creationDate);
+        contentValues.put(COLUMN_DUE_DATE, dueDate);
 
         db.insert(TABLE_NOTES, null, contentValues);
         db.close();

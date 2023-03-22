@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ContactList</string>
+    <string name="app_name">NotesApplication</string>
     <string name="my_String">Settings</string>
     <string name="emailAddressText">Email:</string>
     <string name="contactListDesc">Button to display a list of contacts.</string>

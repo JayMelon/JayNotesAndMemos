@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Note> notes;
     private NoteAdapter noteAdapter;
     private ImageButton homeButton, settingButton;
+    String sortOrder, sortby;
     public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, content, priority, dueDate;
 
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             ((Activity) MainActivity.this).startActivityForResult(intent, 1);
         }
     }
+    //Strings from Preferences to alter table.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         fabNewNote = findViewById(R.id.fab_new_note);
         notesDBHelper = new NotesDBHelper(this);
-
+        sortOrder = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.OrderFieldKey, NotesDBHelper.COLUMN_TITLE);
+        sortby = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.SortFieldKey, "ASC");
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -78,34 +82,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        String sortOrder = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.OrderFieldKey, NotesDBHelper.COLUMN_TITLE);
-        String sortby = getSharedPreferences(NotesSettingsActivity.Notes_Preferences, Context.MODE_PRIVATE).getString(NotesSettingsActivity.SortFieldKey, "ASC");
-        NotesDBHelper ds = new NotesDBHelper(this);
-        try {
-            ds.open();
-            notes = ds.getAllNotes(sortOrder, sortby);
-            ds.close();
-            if (notes.size() > 0) {
-                recyclerView = findViewById(R.id.recyclerView);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-                recyclerView.setLayoutManager(layoutManager);
-                noteAdapter = new NoteAdapter(this, notes);
-                recyclerView.setAdapter(noteAdapter);
-            } else {
-                Intent intent = new Intent(MainActivity.this, NotesSettingsActivity.class);
-                startActivity(intent);
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
-        }
-    }
-
     private void loadNotesFromDatabase() {
-        String orderBy = "priority DESC"; // Or any other ordering based on your preferences
-        notes = notesDBHelper.getAllNotes(orderBy);
+        notes = notesDBHelper.getAllNotes(sortOrder, sortby);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

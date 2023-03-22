@@ -65,6 +65,17 @@ public class Note {
     public Date getNoteDueDate() {
         return noteDueDate;
     }
+    @Override
+    public String toString() {
+        return "Note{" +
+                "noteID=" + noteID +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", priority=" + priority +
+                ", noteCreationDate=" + noteCreationDate +
+                ", noteDueDate=" + noteDueDate +
+                '}';
+    }
 
     public void setNoteDueDate(Date noteDueDate) {
         this.noteDueDate = noteDueDate;

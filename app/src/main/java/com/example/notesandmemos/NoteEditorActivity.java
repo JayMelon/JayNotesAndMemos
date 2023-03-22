@@ -1,32 +1,37 @@
 package com.example.notesandmemos;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class NoteEditorActivity extends AppCompatActivity {
     private EditText editTitle, editContent, editPriority;
     private TextView editDate;
+    private ImageButton deleteButton;
     private Button saveButton, datePickerButton;
     private RadioGroup radioGroupPriority;
     private RadioButton radioHigh, radioMedium, radioLow;
     private NotesDBHelper notesDBHelper;
     private int noteId;
-private DatePickerDialog datePickerDialog;
+    private DatePickerDialog datePickerDialog;
+    boolean newNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,8 @@ private DatePickerDialog datePickerDialog;
         radioLow = findViewById(R.id.radio_low);
         saveButton = findViewById(R.id.save_button);
         notesDBHelper = new NotesDBHelper(this);
-
+        datePickerButton = findViewById(R.id.datePickerBtn);
+        datePickerButton.setText(getTodaysDate());
         // Check if we are editing an existing note
         noteId = getIntent().getIntExtra("noteId", -1);
         if (noteId != -1) {
@@ -53,6 +59,9 @@ private DatePickerDialog datePickerDialog;
             editTitle.setText(note.getTitle());
             editContent.setText(note.getContent());
             initSavedNotePriority(note.getPriority());
+            //Converted Time
+            datePickerButton.setText(getDate(note.getNoteDueDate().getTime()));
+
 
         }
 
@@ -64,16 +73,19 @@ private DatePickerDialog datePickerDialog;
                 String content = editContent.getText().toString();
                 int priority = getSelectPriority();
                 Date creationDate = new Date(System.currentTimeMillis());
-                Date noteDueDate = new Date(System.currentTimeMillis());
+                System.out.println(getDate(datePickerButton.getText().toString()) + "This is the Date on the button");
+
+                Date noteDueDate = new Date(getDate(datePickerButton.getText().toString()));
                 Note note = new Note();
                 note.setTitle(title);
                 note.setContent(content);
                 note.setPriority(priority);
                 note.setNoteCreationDate(creationDate);
                 note.setNoteDueDate(noteDueDate);
+System.out.println(note);
 
                 if (noteId == -1) {
-                    // Save a new note
+                    // Save a new note to DBS
                     notesDBHelper.addNote(note);
                 } else {
                     // Update an existing note
@@ -89,8 +101,8 @@ private DatePickerDialog datePickerDialog;
     }
 
     //Inits the radio buttons to be pre checked based on Priority.
-    private void initSavedNotePriority(int priority){
-        switch(priority){
+    private void initSavedNotePriority(int priority) {
+        switch (priority) {
             case 3:
                 radioHigh.setChecked(true);
                 break;
@@ -103,18 +115,19 @@ private DatePickerDialog datePickerDialog;
         }
 
     }
+
     //Returns the priority based on selected radio buttons
     private int getSelectPriority() {
-        if(radioHigh.isChecked()){
+        if (radioHigh.isChecked()) {
             return 3;
-        }
-        else if(radioMedium.isChecked()){
+        } else if (radioMedium.isChecked()) {
             return 2;
 
-        }else{
+        } else {
             return 1;
         }
     }
+
     private void initChangeDateButton() {
         datePickerButton = findViewById(R.id.datePickerBtn);
         initDatePicker();
@@ -126,10 +139,12 @@ private DatePickerDialog datePickerDialog;
         });
 
     }
-    private String makeDateString(int day, int month, int year){
+
+    private String makeDateString(int day, int month, int year) {
         return getMonthFormat(month) + " " + day + " " + year;
     }
-    private void initDatePicker(){
+
+    private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -148,9 +163,10 @@ private DatePickerDialog datePickerDialog;
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
-    private String getMonthFormat(int month){
+
+    private String getMonthFormat(int month) {
         String currentMonth = "";
-        switch(month){
+        switch (month) {
             case 1:
                 currentMonth = "JAN";
                 break;
@@ -190,8 +206,46 @@ private DatePickerDialog datePickerDialog;
         }
         return currentMonth;
     }
+//Returns a Long based on the Set date from picker
+    private long getDate(String date) {
+        long dateLong = 0;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy");
+            Date d = dateFormat.parse(date);
+            dateLong = d.getTime();
+            return dateLong;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateLong;
+    }
+    private String getDate(long date){
+        Date d = new Date(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+        return sdf.format(d).toUpperCase(Locale.ROOT);
+    }
+    //Returns todays date into a String.
+private String getTodaysDate(){
+    Calendar cal = Calendar.getInstance();
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH);
+    month++;
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+return makeDateString(day,month,year);
 
-    public void openDatePicker(View view){
+}
+
+    //Opens the Datepicker Dialog
+    private void openDatePicker(View view){
         datePickerDialog.show();
+    }
+    private void initDeleteBtn(){
+        deleteButton.findViewById(R.id.deleteBtn);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
