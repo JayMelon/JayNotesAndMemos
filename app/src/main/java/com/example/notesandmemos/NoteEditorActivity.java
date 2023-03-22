@@ -72,22 +72,22 @@ public class NoteEditorActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//On Save click, Retrive Objects from EditText, Text, and Times
                 String title = editTitle.getText().toString();
                 String content = editContent.getText().toString();
                 int priority = getSelectPriority();
+                //Returns the time of the device
                 Date creationDate = new Date(System.currentTimeMillis());
-                System.out.println(getDate(datePickerButton.getText().toString()) + "This is the Date on the button");
-
+//Create a date object
                 Date noteDueDate = new Date(getDate(datePickerButton.getText().toString()));
+                //Set everything to Note Object
                 Note note = new Note();
                 note.setTitle(title);
                 note.setContent(content);
                 note.setPriority(priority);
                 note.setNoteCreationDate(creationDate);
                 note.setNoteDueDate(noteDueDate);
-System.out.println(note);
-
+//If note doesn't have an ID
                 if (noteId == -1) {
                     // Save a new note to DBS
                     notesDBHelper.addNote(note);
@@ -131,7 +131,7 @@ System.out.println(note);
             return 1;
         }
     }
-
+//Inits Change Date button
     private void initChangeDateButton() {
         datePickerButton = findViewById(R.id.datePickerBtn);
         initDatePicker();
@@ -144,11 +144,11 @@ System.out.println(note);
 
     }
 
-
+//Make the date given a String
     private String makeDateString(int day, int month, int year) {
         return getMonthFormat(month) + " " + day + " " + year;
     }
-
+//Inits the DatePicker Dialog functions
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -168,7 +168,7 @@ System.out.println(note);
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
-
+//Returns the Month formated in MMM from given month
     private String getMonthFormat(int month) {
         String currentMonth = "";
         switch (month) {
@@ -224,6 +224,7 @@ System.out.println(note);
         }
         return dateLong;
     }
+    //Returns Date in a "MMM dd yyyy" String
     private String getDate(long date){
         Date d = new Date(date);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
@@ -244,6 +245,7 @@ return makeDateString(day,month,year);
     private void openDatePicker(View view){
         datePickerDialog.show();
     }
+    //Inits the delete function
     private void initDeleteBtn() {
         deleteButton = findViewById(R.id.deleteBtn);
 

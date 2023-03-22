@@ -64,7 +64,7 @@ public void open() throws SQLException{
         db.close();
         return id;
     }
-
+//Gets a note and updates it the note by checking ID
     public int updateNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -78,7 +78,7 @@ public void open() throws SQLException{
         db.close();
         return rowsAffected;
     }
-
+//Goes into dbs and deletes the note based on given ID
     public boolean deleteNote(int noteId) {
 boolean didDelete = false;
 try{
@@ -122,6 +122,7 @@ return didDelete;
         return notes;
     }
     @SuppressLint("Range")
+    //Gets all notes from DBS ordered and sorted in an ArrayList
     public ArrayList<Note> getAllNotes(String orderBy, String sortby) {
         ArrayList<Note> notes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -153,6 +154,7 @@ return didDelete;
         return notes;
     }
     @SuppressLint("Range")
+    //Returns Note Object based given on noteID
     public Note getNote(int noteId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTES,
@@ -188,7 +190,7 @@ return didDelete;
 
         return null;
     }
-    //
+    //Adds note to the DBS
     public void addNote(Note note) {
     long creationDate = note.getNoteCreationDate().getTime();
     long dueDate = note.getNoteDueDate().getTime();

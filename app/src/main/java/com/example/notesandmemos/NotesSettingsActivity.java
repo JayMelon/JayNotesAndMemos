@@ -60,7 +60,7 @@ public class NotesSettingsActivity extends AppCompatActivity {
     }
 
 
-
+//Inits the RadioButtons to automatically pregenerate checks based on Shareprefences
     private void initSortByClick(){
         sortByFieldGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -69,17 +69,18 @@ public class NotesSettingsActivity extends AppCompatActivity {
                     //Set to Column Name
                     getSharedPreferences(Notes_Preferences, Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_TITLE).apply();
                 }
-                //Set to City Column Name
+                //Set to Priority
                 else if(rbPriority.isChecked()){
                     getSharedPreferences(Notes_Preferences,Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_PRIORITY).apply();
                 }
-                //Set to Birthday Column name
+                //Set to Due Date
                 else {
                     getSharedPreferences(Notes_Preferences, Context.MODE_PRIVATE).edit().putString(OrderFieldKey,NotesDBHelper.COLUMN_DUE_DATE).apply();
                 }
             }
         });
     }
+    //Init radio button order based on ASC and DESC
     private void initOrderByClick(){
         sortOrderByFieldGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -93,7 +94,7 @@ public class NotesSettingsActivity extends AppCompatActivity {
             }
         });
     }
-
+//Init Home button on Nav bar
     private void initHomeButton() {
         homeButton = findViewById(R.id.imageButtonList);
         homeButton.setOnClickListener(new View.OnClickListener() {
